@@ -2,7 +2,7 @@ import shelve
 import uuid
 import fnmatch
 import fcntl
-from base import app
+from projects_base.base import app
 
 
 class ShelveObject:

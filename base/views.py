@@ -1,4 +1,4 @@
-from base import app
+from projects_base.base import app
 from flask import send_from_directory
 
 

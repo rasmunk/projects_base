@@ -2,5 +2,5 @@ from flask import Flask
 app = Flask(__name__)
 
 # Load common configuration
-import base.conf
-import base.views
+import projects_base.base.conf
+import projects_base.base.views
