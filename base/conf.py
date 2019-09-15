@@ -6,7 +6,6 @@ from projects_base.base import app
 # Load config.ini
 res_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                         '..', 'res', 'config.ini')
-print("res path: {}".format(res_path))
 config = configparser.SafeConfigParser()
 config.read(res_path)
 
