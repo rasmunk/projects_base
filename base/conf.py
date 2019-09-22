@@ -12,7 +12,3 @@ config.read(res_path)
 config.get('BASE', 'static_folder')
 config.get('BASE', 'upload_folder')
 config.get('BASE', 'db_lock')
-# base_blueprint.config['STATIC_FOLDER'] = os.path.abspath(
-#     config.get('BASE', 'static_folder'))
-# base_blueprint.config['UPLOAD_FOLDER'] = os.path.abspath(
-#     config.get('BASE', 'upload_folder'))
