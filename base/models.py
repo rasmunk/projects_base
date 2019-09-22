@@ -2,25 +2,25 @@ import shelve
 import uuid
 import fnmatch
 import fcntl
-from projects_base.base import app
+from projects_base.base import config
 
 
 class ShelveObject:
     def __init__(self):
         # Key Identifier
         self._id = str(uuid.uuid4())
-        # Type identifier, used for retriving on the relvant instances
+        # Type identifier, used for retrieving the relevant instances
         self._type = str(type(self))
 
     def save(self):
-        with open(app.config['DB_LOCK'], 'wb') as lckfile:
+        with open(config.get('BASE', 'db_lock'), 'wb') as lock:
             # Lock before db write operation, blocking for now
-            fcntl.flock(lckfile.fileno(), fcntl.LOCK_EX)
-            with shelve.open(app.config['DB']) as db:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            with shelve.open(config.get('BASE', 'db_path')) as db:
                 db[self._id] = {key: self.__dict__[key] for key in
                                 self.__dict__.keys()}
             # Unlock after operation
-            fcntl.flock(lckfile.fileno(), fcntl.LOCK_UN)
+            fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
 
         return self._id
 
@@ -29,7 +29,7 @@ class ShelveObject:
     def get(cls, instance_id):
         _object = None
         try:
-            with shelve.open(app.config['DB']) as db:
+            with shelve.open(config.get('BASE', 'db_path')) as db:
                 _object = cls(**db[instance_id])
         except KeyError:
             pass
@@ -39,19 +39,19 @@ class ShelveObject:
     @classmethod
     def get_all(cls):
         ids = []
-        with shelve.open(app.config['DB']) as db:
+        with shelve.open(config.get('BASE', 'db_path')) as db:
             ids = [key for key in db.keys() if db[key]['_type'] == str(cls)]
         return [cls.get(instance_id) for instance_id in ids]
 
     @classmethod
     def remove(cls, shelve_id):
-        with open(app.config['DB_LOCK'], 'wb') as lckfile:
+        with open(config.get('BASE', 'db_lock'), 'wb') as lock:
             # Lock before db write operation, blocking for now
-            fcntl.flock(lckfile.fileno(), fcntl.LOCK_EX)
-            with shelve.open(app.config['DB']) as db:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            with shelve.open(config.get('BASE', 'db_path')) as db:
                 db.pop(shelve_id)
             # Unlock after operation
-            fcntl.flock(lckfile.fileno(), fcntl.LOCK_UN)
+            fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
 
     @classmethod
     def clear(cls):
