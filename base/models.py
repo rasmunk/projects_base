@@ -2,6 +2,7 @@ import shelve
 import uuid
 import fnmatch
 import fcntl
+import operator
 from projects_base.base import config
 
 
@@ -78,3 +79,33 @@ class ShelveObject:
                 if obj.__dict__[key] == value:
                     return obj
         return None
+
+    @classmethod
+    def get_top_with(cls, key, num=10):
+        objects = cls.get_all()
+        distinct_count = {}
+        for obj in objects:
+            if hasattr(obj, key):
+                struct = obj.__dict__[key]
+                distinct_count.update(count_distinct_in(struct))
+        top_num = dict(sorted(distinct_count.items(),
+                              key=operator.itemgetter(1),
+                              reverse=True)[:num])
+        return top_num
+
+
+def count_distinct_in(struct, current_count=None):
+    if not current_count:
+        current_count = {}
+    if isinstance(struct, str):
+        if struct not in current_count:
+            current_count[struct] = 1
+        else:
+            current_count[struct] += 1
+    if isinstance(struct, list):
+        for i in struct:
+            return count_distinct_in(i, current_count)
+    if isinstance(struct, dict):
+        for k, v in struct.items():
+            return count_distinct_in(k, current_count)
+    return current_count

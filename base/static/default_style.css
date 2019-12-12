@@ -1,3 +1,19 @@
+.tags {
+    margin-top: 1em;
+}
+
+.tag-link {
+    background-color: #66afe9;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.tag-link:hover, .tag-link:active {
+    background-color: #2b669a;
+    text-decoration: none;
+}
+
 .banner img {
     position: relative;
     left: 50%;
