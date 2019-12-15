@@ -19,7 +19,7 @@
         </div>
         <div class="container-fluid bottom-section section">
             {% if owner %}
-                {% from '_formhelpers.html' import form_field %}
+                {% from 'base/_formhelpers.html' import form_field %}
                 <div class="submission-form center">
                     <form id="form-update"
                           action="{{ url_for('projects.update', object_id=object._id) }}"

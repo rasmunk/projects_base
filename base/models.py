@@ -60,6 +60,22 @@ class ShelveObject:
             cls.remove(instance._id)
 
     @classmethod
+    def get_with_attr(cls, attr, value):
+        result = []
+        objects = cls.get_all()
+        for obj in objects:
+            if hasattr(obj, attr):
+                obj_attr = getattr(obj, attr)
+                if isinstance(obj_attr, type(value)) and \
+                        obj_attr == value:
+                    result.append(obj)
+                else:
+                    if isinstance(obj_attr, (list, set, tuple, dict)):
+                        if value in obj_attr:
+                            result.append(obj)
+        return result
+
+    @classmethod
     def get_with_search(cls, key, value):
         result = []
         search = "*" + value + "*"
@@ -81,10 +97,11 @@ class ShelveObject:
         return None
 
     @classmethod
-    def get_top_with(cls, key, num=10):
-        objects = cls.get_all()
+    def get_top_with(cls, key, collection=None, num=10):
+        if not collection:
+            collection = cls.get_all()
         distinct_count = {}
-        for obj in objects:
+        for obj in collection:
             if hasattr(obj, key):
                 struct = obj.__dict__[key]
                 distinct_count.update(count_distinct_in(struct))

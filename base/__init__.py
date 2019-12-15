@@ -5,5 +5,4 @@ base_blueprint = Blueprint('projects_base', __name__,
                            static_folder='static',
                            static_url_path='/base/static',
                            template_folder='templates')
-
 import projects_base.base.views
