@@ -112,6 +112,55 @@ function setupTagSearch(createTileCallback) {
     }
 }
 
+function createGridTile(obj) {
+    var newHeader = document.createElement('h3');
+    newHeader.className = "card-title";
+    newHeader.innerText = obj.name;
+
+    var newBody = document.createElement('p');
+    newBody.className = "card-text";
+    newBody.innerText = obj.description;
+
+    var newCaption = document.createElement('div');
+    newCaption.className = "caption";
+    newCaption.appendChild(newHeader);
+    newCaption.appendChild(newBody);
+
+    var newImage = document.createElement('img');
+    newImage.src = "/images/" + obj.image;
+    newImage.alt = "Project";
+
+    var newThumb = document.createElement('div');
+    newThumb.className = "thumbnail mb-4";
+    newThumb.appendChild(newImage);
+    newThumb.appendChild(newCaption);
+
+    var newLink = document.createElement('a');
+    newLink.className = "d-block mb-4";
+    newLink.href = "/show/" + obj._id;
+    newLink.appendChild(newThumb);
+
+    var newDiv = document.createElement('div');
+    newDiv.className = "col-sm-6 col-md-4 col-lg-3";
+    newDiv.appendChild(newLink);
+    return newDiv;
+}
+
+
+function populateGrid(objects) {
+    let gridItems = document.getElementById('grid-items');
+    removeChildren(gridItems);
+    for (let objs in objects) {
+        if (objects.hasOwnProperty(objs)) {
+            let obj = objects[objs];
+            let tile = createGridTile(obj);
+            // Access thumbnail child element -> attach hover effect
+            setupThumbnailHoverEffect(tile.getElementsByClassName('thumbnail')[0]);
+            gridItems.appendChild(tile);
+        }
+    }
+}
+
 $(document).ready(function () {
     setupOverview();
 });

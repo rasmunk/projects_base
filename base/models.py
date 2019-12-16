@@ -60,10 +60,11 @@ class ShelveObject:
             cls.remove(instance._id)
 
     @classmethod
-    def get_with_attr(cls, attr, value):
+    def get_with_attr(cls, attr, value, collection=None):
         result = []
-        objects = cls.get_all()
-        for obj in objects:
+        if not collection:
+            collection = cls.get_all()
+        for obj in collection:
             if hasattr(obj, attr):
                 obj_attr = getattr(obj, attr)
                 if isinstance(obj_attr, type(value)) and \
@@ -76,11 +77,12 @@ class ShelveObject:
         return result
 
     @classmethod
-    def get_with_search(cls, key, value):
+    def get_with_search(cls, key, value, collection=None):
         result = []
         search = "*" + value + "*"
-        objects = cls.get_all()
-        for obj in objects:
+        if not collection:
+            collection = cls.get_all()
+        for obj in collection:
             if hasattr(obj, key):
                 if len(fnmatch.filter([obj.__dict__[key].lower()],
                                       search.lower())) > 0:
@@ -88,9 +90,10 @@ class ShelveObject:
         return result
 
     @classmethod
-    def get_with_first(cls, key, value):
-        objects = cls.get_all()
-        for obj in objects:
+    def get_with_first(cls, key, value, collection=None):
+        if not collection:
+            collection = cls.get_all()
+        for obj in collection:
             if hasattr(obj, key):
                 if obj.__dict__[key] == value:
                     return obj
