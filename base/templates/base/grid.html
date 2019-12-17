@@ -1,6 +1,8 @@
 {% extends "base/base.html" %}
 {% block content %}
-    {% from 'base/_formhelpers.html' import form_field %}
+    {% if form_field is not defined %}
+        {% from 'base/_formhelpers.html' import form_field %}
+    {% endif %}
     <div class="container-full">
         <div class="container-fluid top-section section">
             <h1> {{ grid_header }}</h1>
