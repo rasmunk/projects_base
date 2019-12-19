@@ -107,7 +107,8 @@ class ShelveObject:
         for obj in collection:
             if hasattr(obj, key):
                 struct = obj.__dict__[key]
-                distinct_count.update(count_distinct_in(struct))
+                distinct_count.update(count_distinct_in(struct),
+                                      distinct_count)
         top_num = dict(sorted(distinct_count.items(),
                               key=operator.itemgetter(1),
                               reverse=True)[:num])
