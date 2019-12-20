@@ -7,6 +7,8 @@
     padding: 5px 10px;
     border-radius: 5px;
     text-decoration: none;
+    -webkit-appearance: button;
+    cursor: pointer;
 }
 
 .tag-link:hover, .tag-link:active {
