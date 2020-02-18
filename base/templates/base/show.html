@@ -1,5 +1,8 @@
 {% extends "base/base.html" %}
 {% block content %}
+    {% if form_field is not defined %}
+        {% from 'base/_formhelpers.html' import form_field %}
+    {% endif %}
     <div class="container-full">
         {% if object %}
             <div class="container-fluid top-section section">
@@ -21,9 +24,6 @@
             </div>
             <div class="container-fluid bottom-section section">
                 {% if owner %}
-                    {% if form_field is not defined %}
-                        {% from 'base/_formhelpers.html' import form_field %}
-                    {% endif %}
                     <div class="submission-form center">
                         <form id="form-update"
                               action="{{ url_for('projects.update', object_id=object._id) }}"

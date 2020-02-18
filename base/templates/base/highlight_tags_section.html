@@ -1,3 +1,6 @@
+{% if form_field is not defined %}
+    {% from 'base/_formhelpers.html' import form_field %}
+{% endif %}
 {% if tags %}
     <div class="highlight-tags">
         <div class="tags">
