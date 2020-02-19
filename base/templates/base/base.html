@@ -1,4 +1,7 @@
 {%- extends "bootstrap/base.html" %}
+{% set static_link = 'projects_base.static' %}
+{% set style_file = 'default_style.css' %}
+{% set js_file = 'common.js' %}
 
 {# enable fixes for legacy browsers. import macros #}
 {% import "bootstrap/fixes.html" as fixes %}
@@ -16,9 +19,9 @@
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css"
-          href="{{ url_for('projects_base.static', filename='default_style.css') }}">
+          href="{{ url_for(static_link, filename=style_file) }}">
     <script type="text/javascript"
-            src="{{ url_for('projects_base.static', filename='common.js') }}">
+            src="{{ url_for(static_link, filename=js_file) }}">
     </script>
 {% endblock %}
 

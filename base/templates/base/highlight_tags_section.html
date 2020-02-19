@@ -6,7 +6,7 @@
         <div class="tags">
             {% for t in tags %}
                 <a class="tag-link"
-                   href="{{ url_for('projects.tag_search', tag=t) }}">{{ t }}</a>
+                   href="{{ url_for(object_tag_link, tag=t) }}">{{ t }}</a>
             {% endfor %}
         </div>
     </div>
