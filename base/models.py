@@ -14,12 +14,11 @@ class ShelveObject:
         self._type = str(type(self))
 
     def save(self):
-        with open(config.get('BASE', 'db_lock'), 'wb') as lock:
+        with open(config.get("BASE", "db_lock"), "wb") as lock:
             # Lock before db write operation, blocking for now
             fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
-            with shelve.open(config.get('BASE', 'db_path')) as db:
-                db[self._id] = {key: self.__dict__[key] for key in
-                                self.__dict__.keys()}
+            with shelve.open(config.get("BASE", "db_path")) as db:
+                db[self._id] = {key: self.__dict__[key] for key in self.__dict__.keys()}
             # Unlock after operation
             fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
 
@@ -30,7 +29,7 @@ class ShelveObject:
     def get(cls, instance_id):
         _object = None
         try:
-            with shelve.open(config.get('BASE', 'db_path')) as db:
+            with shelve.open(config.get("BASE", "db_path")) as db:
                 _object = cls(**db[instance_id])
         except KeyError:
             pass
@@ -40,16 +39,16 @@ class ShelveObject:
     @classmethod
     def get_all(cls):
         ids = []
-        with shelve.open(config.get('BASE', 'db_path')) as db:
-            ids = [key for key in db.keys() if db[key]['_type'] == str(cls)]
+        with shelve.open(config.get("BASE", "db_path")) as db:
+            ids = [key for key in db.keys() if db[key]["_type"] == str(cls)]
         return [cls.get(instance_id) for instance_id in ids]
 
     @classmethod
     def remove(cls, shelve_id):
-        with open(config.get('BASE', 'db_lock'), 'wb') as lock:
+        with open(config.get("BASE", "db_lock"), "wb") as lock:
             # Lock before db write operation, blocking for now
             fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
-            with shelve.open(config.get('BASE', 'db_path')) as db:
+            with shelve.open(config.get("BASE", "db_path")) as db:
                 db.pop(shelve_id)
             # Unlock after operation
             fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
@@ -67,8 +66,7 @@ class ShelveObject:
         for obj in collection:
             if hasattr(obj, attr):
                 obj_attr = getattr(obj, attr)
-                if isinstance(obj_attr, type(value)) and \
-                        obj_attr == value:
+                if isinstance(obj_attr, type(value)) and obj_attr == value:
                     result.append(obj)
                 else:
                     if isinstance(obj_attr, (list, set, tuple, dict)):
@@ -84,8 +82,7 @@ class ShelveObject:
             collection = cls.get_all()
         for obj in collection:
             if hasattr(obj, key):
-                if len(fnmatch.filter([obj.__dict__[key].lower()],
-                                      search.lower())) > 0:
+                if len(fnmatch.filter([obj.__dict__[key].lower()], search.lower())) > 0:
                     result.append(obj)
         return result
 
@@ -107,11 +104,12 @@ class ShelveObject:
         for obj in collection:
             if hasattr(obj, key):
                 struct = obj.__dict__[key]
-                distinct_count.update(count_distinct_in(struct,
-                                                        distinct_count))
-        top_num = dict(sorted(distinct_count.items(),
-                              key=operator.itemgetter(1),
-                              reverse=True)[:num])
+                distinct_count.update(count_distinct_in(struct, distinct_count))
+        top_num = dict(
+            sorted(distinct_count.items(), key=operator.itemgetter(1), reverse=True)[
+                :num
+            ]
+        )
         return top_num
 
 
