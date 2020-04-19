@@ -14,27 +14,27 @@ function isEmpty(obj) {
     return Object.keys(obj).length === 0;
 }
 
-function setupThumbnailHoverEffect(thumbnail) {
+function setupThumbnailHoverEffect(thumbnail, static_color, hover_color) {
     thumbnail.onmouseover = function () {
-        this.style.borderColor = "#46743c";
+        this.style.borderColor = hover_color;
         this.style.borderWidth = "6px";
     };
     thumbnail.onmouseout = function () {
-        this.style.borderColor = "#8fd182";
+        this.style.borderColor = static_color;
         this.style.borderWidth = "2px";
     };
 
     thumbnail.onclick = function () {
-        this.style.borderColor = "#8fd182";
+        this.style.borderColor = static_color;
         this.style.borderWidth = "2px";
     };
 }
 
-function setupOverview() {
+function setupOverview(static_color, hover_color) {
     let thumbnails = document.getElementsByClassName('thumbnail');
     for (let thumbnail in thumbnails) {
         if (thumbnails.hasOwnProperty(thumbnail)) {
-            setupThumbnailHoverEffect(thumbnails[thumbnail]);
+            setupThumbnailHoverEffect(thumbnails[thumbnail], static_color, hover_color);
         }
     }
 }
@@ -55,7 +55,7 @@ function errorRender(error) {
 }
 
 
-function setupTagSearch(createTileCallback) {
+function setupTagSearch(createTileCallback, static_color, hover_color) {
     let typingTimer;                //timer identifier
     let doneTypingInterval = 500;  //time in ms, 2 seconds
     let $input = $('#tag');
@@ -96,7 +96,7 @@ function setupTagSearch(createTileCallback) {
                             if (response[results].hasOwnProperty(result)) {
                                 let tile = createTileCallback(response[results][result]);
                                 // Access thumbnail child element -> attach hover effect
-                                setupThumbnailHoverEffect(tile.getElementsByClassName('thumbnail')[0]);
+                                setupThumbnailHoverEffect(tile.getElementsByClassName('thumbnail')[0], static_color, hover_color);
                                 gridItems.appendChild(tile);
                             }
                         }
@@ -147,7 +147,7 @@ function createGridTile(obj) {
 }
 
 
-function populateGrid(objects) {
+function populateGrid(objects, static_color, hover_color) {
     let gridItems = document.getElementById('grid-items');
     removeChildren(gridItems);
     for (let objs in objects) {
@@ -155,12 +155,12 @@ function populateGrid(objects) {
             let obj = objects[objs];
             let tile = createGridTile(obj);
             // Access thumbnail child element -> attach hover effect
-            setupThumbnailHoverEffect(tile.getElementsByClassName('thumbnail')[0]);
+            setupThumbnailHoverEffect(tile.getElementsByClassName('thumbnail')[0], static_color, hover_color);
             gridItems.appendChild(tile);
         }
     }
 }
 
 $(document).ready(function () {
-    setupOverview();
+    setupOverview("#8fd182", "#46743c");
 });
