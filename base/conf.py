@@ -6,7 +6,7 @@ import configparser
 res_path = os.path.join(
     os.path.dirname(os.path.realpath(__file__)), "..", "res", "config.ini"
 )
-config = configparser.SafeConfigParser()
+config = configparser.ConfigParser()
 config.read(res_path)
 
 # common static folder path
