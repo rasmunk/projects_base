@@ -1,3 +1,4 @@
+import sys
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import Optional, Regexp
@@ -9,29 +10,23 @@ class FormManager:
 
     def __init__(self, default_class=None, default_module=None, custom_key=None):
         # Add the package config form class if defined
-
         if default_class and default_module:
-            self.register_form_class(
-                default_class, module=default_module, custom_key=custom_key
+            self.add_module_class(
+                default_module, default_class, custom_key=custom_key
             )
 
-    def register_form_class(self, class_name, module=None, custom_key=None):
-        # Look in external module if provided
-        if module:
-            module_ = __import__(module)
-            class_ = getattr(module_, class_name)
-        else:
-            module_ = __import__("base")
-            class_ = getattr(module_, class_name)
-
+    def add_module_class(self, module_name, class_name, custom_key=None):
         if custom_key:
-            self.forms[custom_key] = class_
+            self.forms[custom_key] = [module_name, class_name]
         else:
-            self.forms[class_] = class_
+            self.forms[class_name] = [module_name, class_name]
 
-    def get_form_class(self, cls_key):
-        if self.forms and cls_key in self.forms:
-            return self.forms[cls_key]
+
+    def get_form_class(self, key):
+        module_, class_ = self.forms[key]
+        imported_module_ = __import__(module_)
+        form_class = getattr(imported_module_, class_)
+        return form_class
 
 
 class TagsSearchForm(FlaskForm):
