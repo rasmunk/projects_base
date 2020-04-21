@@ -155,6 +155,10 @@ a, a:hover {
     background-color: white;
 }
 
+.bottom-section-table {
+    background-color: white;
+}
+
 /* left align thumbnail text */
 .caption p {
     text-align: left;
