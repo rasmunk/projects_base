@@ -13,6 +13,9 @@ class ShelveObject:
         # Type identifier, used for retrieving the relevant instances
         self._type = str(type(self))
 
+    def serialize(self):
+        return self.__dict__
+
     def save(self):
         with open(config.get("BASE", "db_lock"), "wb") as lock:
             # Lock before db write operation, blocking for now
