@@ -1,15 +1,11 @@
 {% extends "base/base.html" %}
 
-{% if object_kwargs is not defined %}
-    {% set object_kwargs = {} %}
-{% endif %}
-
 {% block content %}
     {% if form_field is not defined %}
         {% from 'base/_formhelpers.html' import form_field %}
     {% endif %}
     <div class="container-full">
-        <div class="container-fluid top-section section">
+        <div class="container-fluid top-section section {% if custom_class %}{{ custom_class }}{% endif %}">
             <h1> {{ grid_header }}</h1>
         </div>
         <div class="container-fluid mid-section section">

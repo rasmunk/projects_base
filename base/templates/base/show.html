@@ -23,7 +23,7 @@
             </div>
             <div class="container-fluid mid-section section">
                 <div class="left">
-                    <img src="{{ url_for(object_image_link, filename=object.image) }}"
+                    <img src="{{ url_for(object_image_link, filename=object.image, **object_kwargs) }}"
                          class="img-fluid">
                 </div>
             </div>
