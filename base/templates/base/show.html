@@ -1,4 +1,9 @@
 {% extends "base/base.html" %}
+
+{% if object_kwargs is not defined %}
+    {% set object_kwargs = {} %}
+{% endif %}
+
 {% block content %}
     {% if form_field is not defined %}
         {% from 'base/_formhelpers.html' import form_field %}
@@ -7,7 +12,7 @@
         {% if object %}
             <div class="container-fluid top-section section">
                 <h1 class="left">
-                    <a href="{{ url_for(object_show_link, object_id=object._id) }}"
+                    <a href="{{ url_for(object_show_link, object_id=object._id, **object_kwargs) }}"
                        style="word-wrap: break-word; color: black;">
                         {{ object.name }}
                     </a>
@@ -26,7 +31,7 @@
                 {% if owner %}
                     <div class="submission-form center">
                         <form id="form-update"
-                              action="{{ url_for(object_update_link, object_id=object._id) }}"
+                              action="{{ url_for(object_update_link, object_id=object._id, **object_kwargs) }}"
                               method="POST" enctype="multipart/form-data">
                             {% for field in form %}
                                 {% if field.id in ['image'] %}
@@ -42,7 +47,7 @@
                             </div>
                         </form>
                         <form id="form-delete"
-                              action="{{ url_for(object_delete_link, object_id=object._id) }}"
+                              action="{{ url_for(object_delete_link, object_id=object._id, **object_kwargs) }}"
                               method="POST">
                             {{ form_field(form.csrf_token) }}
                             <input id="btn-delete" type="submit"
