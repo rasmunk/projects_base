@@ -30,7 +30,7 @@
                     {% for object in objects %}
                         <tr>
                             {% for attribute_name in object_display_attributes %}
-                                {{ object[attribute_name] }}
+                                <td> {{ object[attribute_name] }} </td>
                             {% endfor %}
                         </tr>
                     {% endfor %}
