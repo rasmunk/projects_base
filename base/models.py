@@ -16,6 +16,9 @@ class ShelveObject:
     def serialize(self):
         return self.__dict__
 
+    def items(self):
+        return self.__dict__.items()
+
     def save(self):
         with open(config.get("BASE", "db_lock"), "wb") as lock:
             # Lock before db write operation, blocking for now
